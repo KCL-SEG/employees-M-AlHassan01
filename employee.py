@@ -1,42 +1,64 @@
 """Employee pay calculator."""
 """ENTER YOUR SOLUTION HERE!"""
 
-class Wage:
-    
-    def __init__(self, pay, hours=-1) -> None:
-        self.pay = pay
-        self.hours = hours
+class Work:
+    """"""
 
-    def __is_monthly(self) -> bool:
-        return self.hours < 0
+    def __init__(self, money:int, interval:int=-1) -> None:
+        self.money = money
+        self.interval = interval
+
+    def on_interval(self) -> bool:
+        return self.interval > 0
+
+    def calculate_pay(self) -> int:
+        return self.money*(self.interval if self.on_interval() else 1)
+
+class Wage(Work):
+    """"""
     
-    def calculate_pay(self) -> float:
-        return self.pay * (self.hours if not self.__is_monthly() else 1)
+    def __init__(self, pay:int, hours:int=-1) -> None:
+        super().__init__(pay, hours)
+
+    @property
+    def pay(self) -> int:
+        return self.money
     
+    @property
+    def hours(self) -> int:
+        return self.interval
+    
+
     def __str__(self) -> str:
-        if self.__is_monthly():
+        if not self.on_interval():
             return f"monthly salary of {self.pay}"
         else:
             return f"contract of {self.hours} hours at {self.pay}/hour"
         
-class Commision:
+class Commision(Work):
+    """"""
     
-    def __init__(self, commision, contracts=-1) -> None:
-        self.commision = commision
-        self.contracts = contracts
+    def __init__(self, commision:int, contracts:int=-1) -> None:
+        super().__init__(commision, contracts)
 
-    def __is_bonus(self) -> bool:
-        return self.contracts < 0
+    @property
+    def commision(self) -> int:
+        return self.money
     
-    def calculate_commision(self) -> float:
-        return self.commision * (self.contracts if not self.__is_bonus() else 1)
+    @property
+    def contracts(self) -> int:
+        return self.interval
     
     def __str__(self) -> str:
-        if self.__is_bonus():
+        if not self.on_interval():
             return f"bonus commission of {self.commision}"
         else:
             return f"commission for {self.contracts} contract(s) at {self.commision}/contract"
+        
+
 class Employee:
+    """"""
+    
     def __init__(self, name, wage:Wage, commision:Commision=None):
         self.name = name
         self.wage = wage
@@ -47,7 +69,7 @@ class Employee:
         if self.wage is not None:
             pay += self.wage.calculate_pay()
         if self.commision is not None:
-            pay += self.commision.calculate_commision()
+            pay += self.commision.calculate_pay()
         return pay
 
     def __str__(self):
