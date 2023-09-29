@@ -2,7 +2,7 @@
 """ENTER YOUR SOLUTION HERE!"""
 
 class Work:
-    """"""
+    """Parent class for Wage & Commission"""
 
     def __init__(self, money:int, interval:int=-1) -> None:
         self.money = money
@@ -15,7 +15,7 @@ class Work:
         return self.money*(self.interval if self.on_interval() else 1)
 
 class Wage(Work):
-    """"""
+    """Used to represent the hourly or montly contract the employee has"""
     
     def __init__(self, pay:int, hours:int=-1) -> None:
         super().__init__(pay, hours)
@@ -36,7 +36,7 @@ class Wage(Work):
             return f"contract of {self.hours} hours at {self.pay}/hour"
         
 class Commision(Work):
-    """"""
+    """Used to represent any commisions an employee may have"""
     
     def __init__(self, commision:int, contracts:int=-1) -> None:
         super().__init__(commision, contracts)
@@ -58,13 +58,13 @@ class Commision(Work):
 
 class Employee:
     """"""
-    
-    def __init__(self, name, wage:Wage, commision:Commision=None):
+
+    def __init__(self, name, wage:Wage, commision:Commision=None) -> None:
         self.name = name
         self.wage = wage
         self.commision = commision
 
-    def get_pay(self):
+    def get_pay(self) -> int:
         pay = 0
         if self.wage is not None:
             pay += self.wage.calculate_pay()
@@ -72,7 +72,7 @@ class Employee:
             pay += self.commision.calculate_pay()
         return pay
 
-    def __str__(self):
+    def __str__(self) -> str:
         return (f"{self.name} works on a {self.wage}" + 
                 f"{'. ' if self.commision is None else f' and receives a {self.commision}. '}" +
                 f"Their total pay is {self.get_pay()}.")
